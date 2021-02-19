@@ -37,6 +37,22 @@ with fewer mesh nodes to reduce the number of degrees of freedom. This is useful
 model and iterating on other parameters in the system outside of the plant. This feature can be utilized
 by commenting out “heat_sink_defs” in the “top_script” and replacing it with “heat_sink_defs_DEBUG”.
 
+# Release 2.0: Model Order Reduction
+
+This example using a finite element formulation of the heat equation on the heat sink is quite computationally
+intensive, requiring matrix equations of size 18,559 x 18,559. This method therefore naturally presents an
+opportunity to apply a model order reduction technique in order to reduce the resources needed to simulate. An
+option to choose between the full-order finite element model or a reduced-order version of the FE model was
+added in the "Choose fidelity" block in the CPU + Heat Sink subsystem. The user now has an option to choose the
+size of the reduced model such that the the execution time of running "top_script" goes from the order of one
+day down to the order of one minute.
+The directory "MOR_tests" contains a test script that examines the relative error of reduced order models as a
+function of reduced order as well as other model order reduction parameters.
+The model order reduction parameters appear when "Reduced Order Model" is chosen from the drop down menu in the
+"Choose fidelity" block in the plant subsytem. The first parameter chosen by the user is a frequency range range
+of interest for the modes to be retained after modal truncation. Choosing this range requires prior knowledge
+about the system of interest from the user. The remaining two parameters are the number of modes retained,
+corresponding to the size of the reduced system.
 
 Contents:
 
@@ -55,3 +71,5 @@ HeatInput.mat: MAT file that defines Signal Editor scenarios
 top_script.m: MATLAB script that calls subsytem scripts, runs simulations with different input scenarios, and opens Simulation Manager
 
 Demo_description.pdf: Detailed write-up of model development and design decisions made
+
+MOR_tests: directory that contains script to determine acceptable reduced order model
