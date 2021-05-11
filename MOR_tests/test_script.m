@@ -1,5 +1,3 @@
-%% access parent directory files
-addpath ..
 %% full nDoF
 heat_sink_defs
 n = size(K,1);
@@ -71,5 +69,7 @@ end
 figure; plot(r,error,'-*','LineWidth',2)
 xlabel('Reduced Order')
 ylabel('Relative Error')
-%% restore path
-rmpath ..
+
+figure; plot(r,timing,'-*','LineWidth',2)
+xlabel('Reduced Order')
+ylabel('Simulation Time (s)')

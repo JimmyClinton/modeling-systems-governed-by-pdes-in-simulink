@@ -23,6 +23,7 @@ g  = decsg(gd,sf,ns); % Decompose constructive solid 2-D geometry into minimal r
 pg = geometryFromEdges(heatsink,g); % apply geometry to model
 gm = extrude(pg,W); % generate 3D geometry from 2D cross section
 heatsink.Geometry = gm; % replace model geometry with 3D
+rotate(heatsink.Geometry,90,[0 0 0],[1 0 0]); % make gravity in -z direction
 m = generateMesh(heatsink,'Hmin',t,'Hgrad',1.9); % try to min(nDoF)
 %% visualize geometry to get i/o #s
 % figure; pdegplot(heatsink,'FaceLabels','on') % visualize geometry
@@ -30,9 +31,9 @@ m = generateMesh(heatsink,'Hmin',t,'Hgrad',1.9); % try to min(nDoF)
 % figure; pdemesh(m); axis equal
 % figure; pdemesh(m,'NodeLabels','on') % visualize mesh
 CPUcell = 1;
-freeBCfaces = 1:20; % faces that do not see flow, using free convection
-forcedBCfaces = 21:heatsink.Geometry.NumFaces; % faces aligned with flow
-outID = findNodes(m,'nearest',[0.026 -t/2 W/2]'); % middle of yz side of casing
+freeBCfaces = [1 2 11 12 35 36 37 38 55 57 58 59 60 61 62 63 64 65 67]; % faces that do not see flow, using free convection
+forcedBCfaces = setdiff(1:heatsink.Geometry.NumFaces,freeBCfaces); % faces that see flow
+outID = findNodes(m,'nearest',[0.026 -W/2 -t/2]'); % middle of yz side of casing
 %% internal properties
 k = 210; % W*m^-1*K^-1
 rho = 2710; % kg/m^3
@@ -50,14 +51,10 @@ IC = 294; % Kelvin
 thermIC = thermalIC(heatsink,IC); % T = IC everywhere @T=0
 %% boundary conditions
 Tinf = IC; % ambient temperature, Kelvin
-xSectionA = (2*W)*(2*H); % duct cross-sectional area, m^2
 rho = 1.225; % kg/m^3
 h_free = 9.0;
-h_forced = [ ...
-0.0, h_free; ...
-3.0, 50.0; ...
-]; % [V_linear, convective heat transfer coeff]
-h_forced(:,1) = h_forced(:,1) * xSectionA * rho; % convert to h = f(mdot)
+h_forced = [ 0.0, h_free; ...
+             readmatrix('h_coeff.txt')];
 freeBC = thermalBC(heatsink,'Face',freeBCfaces,'HeatFlux',1); % used as convective BC
 forcedBC = thermalBC(heatsink,'Face',forcedBCfaces,'HeatFlux',1); % used as convective BC
 %% FE formulation
