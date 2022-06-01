@@ -44,32 +44,36 @@ intensive, requiring matrix equations of size 18,559 x 18,559. This method there
 opportunity to apply a model order reduction technique in order to reduce the resources needed to simulate. An
 option to choose between the full-order finite element model or a reduced-order version of the FE model was
 added in the "Choose fidelity" block in the CPU + Heat Sink subsystem. The user now has an option to choose the
-size of the reduced model such that the the execution time of running "top_script" goes from the order of one
-day down to the order of one minute.
-The directory "MOR_tests" contains a test script that examines the relative error of reduced order models as a
-function of reduced order as well as other model order reduction parameters.
-The model order reduction parameters appear when "Reduced Order Model" is chosen from the drop down menu in the
-"Choose fidelity" block in the plant subsytem. The first parameter chosen by the user is a frequency range range
-of interest for the modes to be retained after modal truncation. Choosing this range requires prior knowledge
-about the system of interest from the user. The remaining two parameters are the number of modes retained,
-corresponding to the size of the reduced system.
+size of the reduced model such that the the execution time of running "top_script" goes from approximately one
+day down to less than one minute.
+A model order reduction app with a GUI has been provided in this project. The app and the Simulink models in 
+this project save and load ROMs and their corresponding source models into MAT-files. There are a handful of 
+user-tunable parameters that can be used to optimize the size of the reduced system for a target error tolerance.
+ Th first action the user will want to take is to check the validity of the ROM for the source model; that is, 
+check whether there have been chagnes to the source since generating the ROM. To generate a new ROM, the user 
+will need to identify an acceptable allowable error compared to the source model. The frequency range range of 
+interest determines the bounds for the modes to be retained after modal truncation. Choosing this range requires 
+prior knowledge about the system of interest from the user. The remaining two parameters are the number of modes 
+retained, corresponding to the size of the reduced system. The figures below are the results of testing modal 
+truncation on the heat sink and CPU model, and they provide insights into the computational cost benefits from 
+MOR as well as the tradeoffs it has with numerical accuracy. The app will generate the error plot and the user 
+can then determine the optimal size of the ROM and sav it to file.
+
 
 Contents:
 
 Chip_temperature_control.prj: the Simulink project file
 
-CFMvsRPM.csv, RPMvsV.csv: data tables used to construct 1D lookup tables in Simulink model, can be digitized data from plots
+data: a directory containing physical component data that is needed for modeling
 
-fan.slx, heat_sink.slx, sensor.slx: subsystem files referenced by the top level model
+figures: data visualization and example manufacturer data for digitization
 
-fan_defs.m, heat_sink_defs.m, heat_sink_defs_DEBUG.m, sensor_defs.m: MATLAB scripts to initialize subsystem parameters
+models: Simulink model and subsystem files
+
+src: scripts for defining modeling parameters, generating FE matrices, and a model order reduction function
 
 top_system.slx: top level model of complete control systems
 
-HeatInput.mat: MAT file that defines Signal Editor scenarios
-
-top_script.m: MATLAB script that calls subsytem scripts, runs simulations with different input scenarios, and opens Simulation Manager
+top_script.mlx: MATLAB live script that calls subsytem scripts, runs simulations with different input scenarios, and opens Simulation Manager
 
 Demo_description.pdf: Detailed write-up of model development and design decisions made
-
-MOR_tests: directory that contains script to determine acceptable reduced order model
