@@ -1,5 +1,8 @@
 # Modeling Systems Governed by PDEs in Simulink
 
+This project is ogranized as a Simulink Project. As such, the first step after cloning should be
+opening the ".prj" file associated with it.
+
 The system being modeled in this Simulink example is a variable-speed fan cooling a CPU which,
 depending on the model and the operating point, can generate variable amount of heat. Each component
 of the system is modeled using techniques that  easily incorporate empirical data and technical
