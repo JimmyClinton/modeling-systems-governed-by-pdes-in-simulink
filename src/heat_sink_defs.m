@@ -79,5 +79,4 @@ unitForcedBC = zeros(nDoF,1);
 unitForcedBC(forcedBCnodes) = 1;
 normalizedForcedBC = zeros(nDoF,1);
 normalizedForcedBC(forcedBCnodes) = G(forcedBCnodes);
-x0 = ones(nDoF,1)*IC;
 unitCPUHeat = full(F);
