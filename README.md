@@ -9,6 +9,14 @@ of the system is modeled using techniques that  easily incorporate empirical dat
 specifications, and all assumptions are stated in the following discussion regarding levels of
 modeling fidelity.
 
+## Structural Modeling
+
+The structural system example is located in the "structure" directory. The live script details the
+process of building a wing spare finite element model, reducing the order, and importing it into
+Simulink.
+
+## Thermal Modeling
+
 The plant in this system is the thermal dynamics of the heat-generating CPU and the heat-dissipating heat
 sink. These dynamics are modeled by a finite element formulation of the heat equation on the 3D
 geometry. The geometry, meshing, and discretization in this example are done using MATLAB’s PDE
